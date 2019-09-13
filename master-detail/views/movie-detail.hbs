@@ -1,0 +1,34 @@
+<a href="/master">all movies</a>
+
+<form action="/movie-update" method="POST">
+    <input type="text" name="title" value="{{oneMovie.title}}">
+    <input type="number" name="year" value="{{oneMovie.year}}">
+    <input type="text" name="director" value="{{oneMovie.director}}">
+    <input type="text" name="duration" value="{{oneMovie.duration}}">
+    <input type="hidden" name="_id" value="{{oneMovie._id}}">
+
+    <input type="submit" value="Update" />
+</form>
+
+
+
+{{!-- <button id="movie-genres-button">Hide/Show</button> --}}
+{{!-- <ul id="movie-genres">
+    {{#each oneMovie.genre}}
+    <li>{{this}}</li>
+    {{/each}}
+</ul> --}}
+
+<script>
+    var counter = 0;
+
+    document.querySelector("#movie-genres-button").onclick = function () {
+        (counter++ % 2 === 0)
+            ?
+            document.querySelector("#movie-genres").style.display = "none"
+            :
+            document.querySelector("#movie-genres").style.display = "block"
+
+    }
+
+</script>

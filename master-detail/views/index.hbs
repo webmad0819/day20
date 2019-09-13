@@ -1,0 +1,25 @@
+<h1>All my movies ({{nMovies}})</h1>
+
+My creator is: {{creator}}
+
+<button id="order-asc">Year ASC</button>
+<button id="order-desc">Year DESC</button>
+
+<ul id="all-movies">
+    {{#each allMovies}}
+    <li>
+        <a href="{{../host}}/movie/{{_id}}">{{title}} {{year}}</a>
+        <a href="{{../host}}/movie/delete/{{_id}}">Borrar</a>
+    </li>
+    {{/each}}
+</ul>
+
+<script>
+    document.getElementById("order-asc").onclick = () => {
+        location.href = "{{host}}/master/asc"
+    }
+
+    document.getElementById("order-desc").onclick = () => {
+        location.href = "{{host}}/master/desc"
+    }
+</script>
