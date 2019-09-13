@@ -2,8 +2,13 @@
     <input type="text" name="title" placeholder="title">
     <input type="number" name="year" placeholder="year">
     <input type="number" name="rate" placeholder="rate">
-    <input type="text" name="director" placeholder="director">
     <input type="text" name="duration" placeholder="duration">
+
+    <select name="director" id="">
+        {{#each directors}}
+            <option value="{{_id}}">{{name}}</option>
+        {{/each }}
+    </select>
 
     <input type="submit" value="Add a new movie">
 

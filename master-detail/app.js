@@ -4,6 +4,7 @@ const express = require("express");
 const hbs = require("hbs");
 const mongoose = require("mongoose");
 const Movies = require("./models/Movies");
+const Directors = require("./models/Directors");
 const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
@@ -112,7 +113,9 @@ app.get("/movie-querystring", (req, res) => {
 });
 
 app.get("/create-movie", (req, res) => {
-  res.render("add-movie");
+  Directors.find().then(directors => {
+    res.render("add-movie", { directors: directors });
+  });
 });
 
 app.post("/create-movie-2", (req, res) => {
@@ -123,9 +126,15 @@ app.post("/create-movie-2", (req, res) => {
     director: req.body.director,
     duration: req.body.duration
   }).then(createdMovie => {
-    res.json({
-      movieCreated: true,
-      createdMovie
+    console.log("crearted movie: ", createdMovie._id);
+    Directors.findByIdAndUpdate(req.body.director, {
+      $push: { movies: createdMovie._id }
+    }).then(updatedDirector => {
+      res.json({
+        updatedDirector: updatedDirector,
+        movieCreated: true,
+        createdMovie
+      });
     });
   });
 });
@@ -134,6 +143,25 @@ app.get("/movie/delete/:peliId", (req, res) => {
   Movies.findByIdAndDelete(req.params.peliId).then(deletedMovie => {
     res.redirect("/master");
   });
+});
+
+app.get("/add-director", (req, res) => {
+  Directors.create({
+    name: "Christopher Noland",
+    movies: ["5d7775a51be232a0c7086d6e"]
+  }).then(created => {
+    res.json(created);
+  });
+});
+
+app.get("/show-directors", (req, res) => {
+  Directors.find()
+    .populate("movies")
+    .then(directors => {
+      // directors = JSON.parse(JSON.stringify(directors));
+      // directors[0].movies = directors[0].movies.map(movie => movie.title);
+      res.json(directors);
+    });
 });
 
 app.post("/movie-update", (req, res) => {
